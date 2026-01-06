@@ -17,7 +17,6 @@ dependencies {
 
     implementation("org.dom4j:dom4j:2.1.4")
     implementation("org.yaml:snakeyaml:2.0")
-    implementation("xerces:xercesImpl:2.12.2")
 
     testImplementation(kotlin("test"))
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")

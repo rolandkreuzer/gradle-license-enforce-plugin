@@ -23,7 +23,7 @@
  */
 package com.namics.oss.gradle.license
 
-import org.apache.xerces.jaxp.SAXParserImpl
+import javax.xml.parsers.SAXParserFactory
 import org.dom4j.Element
 import org.dom4j.io.SAXReader
 import org.gradle.api.Project
@@ -90,12 +90,13 @@ public class DependencyAnalyser(val project: Project,
     fun findLicenses(pomFile: File): List<License> {
         try {
 
-            val parser = SAXParserImpl.JAXPSAXParser()
-            parser.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            parser.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-            parser.setFeature("http://xml.org/sax/features/namespaces", false);
-            parser.setFeature("http://xml.org/sax/features/namespace-prefixes", false);
-            val reader = SAXReader(parser, false)
+            val parserFactory = SAXParserFactory.newInstance()
+            parserFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            parserFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            parserFactory.setNamespaceAware(false);
+
+            val saxParser = parserFactory.newSAXParser()
+            val reader = SAXReader(saxParser.xmlReader, false)
             val doc = reader.read(pomFile)
 
             if (ANDROID_SUPPORT_GROUP_ID == doc?.rootElement?.element("group")?.text) {
